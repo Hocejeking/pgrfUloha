@@ -1,6 +1,8 @@
+import model.Polygon;
 import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
 import rasterize.RasterBufferedImage;
+import model.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -27,7 +29,7 @@ public class Canvas {
 	private int x,y;
 	private int mouseX, mouseY, clicked;
 	private boolean controlDown = false;
-	private ArrayList<model.Point> PolygonPoints = new ArrayList();
+	private Polygon PolygonCanvas = new Polygon();
 
 	public Canvas(int width, int height) {
 		x = width / 2;
@@ -75,7 +77,7 @@ public class Canvas {
 					mouseX = e.getX();
 					mouseY = e.getY();
 					img.setPixel(mouseX,mouseY, 150);
-					PolygonPoints.add(new model.Point(mouseX,mouseY));
+					PolygonCanvas.getVertices().add(new model.Point(mouseX,mouseY));
 				}
 
 				System.out.println("pressing");
@@ -89,7 +91,8 @@ public class Canvas {
 				x = e.getX();
 				y = e.getY();
 				//clear();
-				draw(mouseX,x,mouseY,y);
+				draw(mouseX,x,mouseY,y, 220);
+				panel.repaint();
 			}
 		});
 
@@ -98,7 +101,7 @@ public class Canvas {
 			public void mouseDragged(MouseEvent e){
 				System.out.println("dragging");
 				clear();
-				draw(mouseX,e.getX(),mouseY,e.getY());
+				draw(mouseX,e.getX(),mouseY,e.getY(),150);
 				panel.repaint();
 			}
 		});
@@ -114,8 +117,8 @@ public class Canvas {
 				System.out.println("event trigg");
 				if(e.getKeyCode() == KeyEvent.VK_CONTROL){
 					System.out.println("control up");
-					drawPolygon(PolygonPoints);
-					PolygonPoints.clear();
+					drawPolygon(PolygonCanvas.getVertices());
+					PolygonCanvas.clearPolygon();
 					panel.repaint();
 				}
 			}
@@ -132,8 +135,8 @@ public class Canvas {
 		graphics.drawImage(img.getImg(), 0, 0, null);
 	}
 
-	public void draw(int x1, int x2, int y1, int y2) {
-		lineRasterizer.rasterize(x1, y1, x2,y2, 150);
+	public void draw(int x1, int x2, int y1, int y2, int color) {
+		lineRasterizer.rasterize(x1, y1, x2,y2, color);
 	}
 
 	public void drawPolygon(ArrayList<model.Point> PolygonPoints){
@@ -151,7 +154,6 @@ public class Canvas {
 	}
 
 	public void start() {
-		//draw();
 		panel.repaint();
 	}
 
