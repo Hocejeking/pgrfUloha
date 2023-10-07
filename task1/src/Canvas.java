@@ -2,11 +2,9 @@ import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
 import rasterize.RasterBufferedImage;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,6 +26,8 @@ public class Canvas {
 	private LineRasterizer lineRasterizer;
 	private int x,y;
 	private int mouseX, mouseY, clicked;
+	private boolean controlDown = false;
+	private ArrayList<model.Point> PolygonPoints = new ArrayList();
 
 	public Canvas(int width, int height) {
 		x = width / 2;
@@ -70,6 +70,14 @@ public class Canvas {
 
 			@Override
 			public void mousePressed(MouseEvent e){
+				if(e.isControlDown()){
+					System.out.println("pressing with control");
+					mouseX = e.getX();
+					mouseY = e.getY();
+					img.setPixel(mouseX,mouseY, 150);
+					PolygonPoints.add(new model.Point(mouseX,mouseY));
+				}
+
 				System.out.println("pressing");
 				mouseX = e.getX();
 				mouseY = e.getY();
@@ -80,7 +88,7 @@ public class Canvas {
 				System.out.println("releasing");
 				x = e.getX();
 				y = e.getY();
-				clear();
+				//clear();
 				draw(mouseX,x,mouseY,y);
 			}
 		});
@@ -92,6 +100,24 @@ public class Canvas {
 				clear();
 				draw(mouseX,e.getX(),mouseY,e.getY());
 				panel.repaint();
+			}
+		});
+
+		panel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e){
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e){
+				System.out.println("event trigg");
+				if(e.getKeyCode() == KeyEvent.VK_CONTROL){
+					System.out.println("control up");
+					drawPolygon(PolygonPoints);
+					PolygonPoints.clear();
+					panel.repaint();
+				}
 			}
 		});
 	}
@@ -108,6 +134,20 @@ public class Canvas {
 
 	public void draw(int x1, int x2, int y1, int y2) {
 		lineRasterizer.rasterize(x1, y1, x2,y2, 150);
+	}
+
+	public void drawPolygon(ArrayList<model.Point> PolygonPoints){
+		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
+		for(int i = 0; i < arrayPoint.length; i++){
+			if(i+1 < arrayPoint.length) {
+				System.out.println("rasterizing");
+				lineRasterizer.rasterize(arrayPoint[i].x, arrayPoint[i].y, arrayPoint[i + 1].x, arrayPoint[i + 1].y, 250);
+			}
+			else{
+				System.out.println("rasterizing last point");
+				lineRasterizer.rasterize(arrayPoint[i].x,arrayPoint[i].y, arrayPoint[0].x, arrayPoint[0].y,250);
+			}
+		}
 	}
 
 	public void start() {
