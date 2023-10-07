@@ -1,7 +1,7 @@
 import model.Line;
+import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
 import rasterize.LineRasterizerGraphics;
-import rasterize.LineRasterizerTrivial;
 import rasterize.RasterBufferedImage;
 
 import javax.swing.*;
@@ -35,7 +35,7 @@ public class CanvasMain {
 		raster = new RasterBufferedImage(width, height);
 
 		lineRasterizer = new LineRasterizerGraphics(raster);
-		lineRasterizer = new LineRasterizerTrivial(raster);
+		lineRasterizer = new FilledLineRasterizer(raster);
 
 		panel = new JPanel() {
 			private static final long serialVersionUID = 1L;
@@ -52,7 +52,7 @@ public class CanvasMain {
 		frame.pack();
 		frame.setVisible(true);
 
-		/*panel.addMouseListener(new MouseAdapter() {
+		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				int size = 2;
@@ -70,9 +70,9 @@ public class CanvasMain {
 				}
 				panel.repaint();
 			}
-		});*/
+		});
 
-		panel.addMouseMotionListener(new MouseMotionAdapter() {
+		/*panel.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 
@@ -86,7 +86,7 @@ public class CanvasMain {
 				panel.repaint();
 
 			}
-		});
+		});*/
 
 
 	}
