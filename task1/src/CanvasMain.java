@@ -1,7 +1,5 @@
-import model.Line;
 import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
-import rasterize.LineRasterizerGraphics;
 import rasterize.RasterBufferedImage;
 
 import javax.swing.*;

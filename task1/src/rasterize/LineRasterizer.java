@@ -22,14 +22,18 @@ public abstract class LineRasterizer {
     }
 
     public void rasterize(Line line) {
-       drawLine(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+       drawLine(line.getX1(), line.getY1(), line.getX2(), line.getY2(), false);
     }
 
     public void rasterize(int x1, int y1, int x2, int y2, int color) {
-        drawLine(x1, y1, x2, y2);
+        drawLine(x1, y1, x2, y2, false);
     }
 
-    protected void drawLine(int x1, int y1, int x2, int y2) {
+    public void rasterizePrecisionMode(Line line){
+        drawLine(line.getX1(),line.getY1(),line.getX2(),line.getY2(), true);
+    }
+
+    protected void drawLine(int x1, int y1, int x2, int y2, boolean precision) {
 
     }
 }

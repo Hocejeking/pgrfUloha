@@ -3,7 +3,7 @@ package rasterize;
 import java.awt.*;
 
 public class FilledLineRasterizer extends LineRasterizer {
-    int color = 150;
+    int color = 220;
 
     public FilledLineRasterizer(Raster raster) {
         super(raster);
@@ -15,7 +15,7 @@ public class FilledLineRasterizer extends LineRasterizer {
     }
 
     @Override
-    protected void drawLine(int x1,int y1,int x2, int y2) {
+    protected void drawLine(int x1,int y1,int x2, int y2, boolean precision) {
         int width = x2 - x1;    //zjištění odvěsny(šířka) trojúhelníku
         int height = y2 - y1;   //zjištění odvěsny (výšky) trojúhelníku
         int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0; //rozhodovací parametry pro směr vykreslení úsečky

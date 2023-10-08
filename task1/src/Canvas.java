@@ -1,3 +1,4 @@
+import model.Point;
 import model.Polygon;
 import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
@@ -8,10 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 /**
  * trida pro kresleni na platno: zobrazeni pixelu
@@ -24,11 +22,11 @@ public class Canvas {
 
 	private JFrame frame;
 	private JPanel panel;
+	private JLabel label = new JLabel();
 	private RasterBufferedImage img;
 	private LineRasterizer lineRasterizer;
 	private int x,y;
-	private int mouseX, mouseY, clicked;
-	private boolean controlDown = false;
+	private int mouseX, mouseY;
 	private Polygon PolygonCanvas = new Polygon();
 
 	public Canvas(int width, int height) {
@@ -57,9 +55,11 @@ public class Canvas {
 			}
 		};
 
+		label.setText("Press and Hold ctrl for drawing Polygons; Press and Hold shift for precision mode; Press C for clearing everything");
 		panel.setPreferredSize(new Dimension(width, height));
 
 		frame.add(panel, BorderLayout.CENTER);
+		frame.add(label, BorderLayout.SOUTH);
 		frame.pack();
 		frame.setVisible(true);
 
@@ -76,40 +76,66 @@ public class Canvas {
 					System.out.println("pressing with control");
 					mouseX = e.getX();
 					mouseY = e.getY();
-					img.setPixel(mouseX,mouseY, 150);
 					PolygonCanvas.getVertices().add(new model.Point(mouseX,mouseY));
 				}
-
+				else if(e.isShiftDown()){
+					System.out.println("entering precision mode");
+					mouseX = e.getX();
+					mouseY = e.getY();
+				}
+				else
+				{
 				System.out.println("pressing");
 				mouseX = e.getX();
 				mouseY = e.getY();
+				}
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e){
-				System.out.println("releasing");
-				x = e.getX();
-				y = e.getY();
-				//clear();
-				draw(mouseX,x,mouseY,y, 220);
-				panel.repaint();
+				if(e.isControlDown()){}
+				else if(e.isShiftDown()){
+					System.out.println("releasing precision mode");
+					x = e.getX();
+					y = e.getY();
+				}
+				else {
+					System.out.println("releasing");
+					x = e.getX();
+					y = e.getY();
+					//clear();
+					draw(mouseX, x, mouseY, y, 220);
+					panel.repaint();
+				}
 			}
 		});
 
 		panel.addMouseMotionListener(new MouseAdapter() {
 			@Override
-			public void mouseDragged(MouseEvent e){
-				System.out.println("dragging");
-				clear();
-				draw(mouseX,e.getX(),mouseY,e.getY(),150);
-				panel.repaint();
+			public void mouseDragged(MouseEvent e) {
+				if (e.isControlDown()) {
+					clear();
+					PolygonCanvas.getVertices().remove(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().size() - 1));
+					PolygonCanvas.getVertices().add(new Point(e.getX(),e .getY()));
+					drawPolygon(PolygonCanvas.getVertices());
+					panel.repaint();
+				} else {
+					System.out.println("dragging");
+					clear();
+					draw(mouseX, e.getX(), mouseY, e.getY(), 150);
+					panel.repaint();
+				}
 			}
 		});
 
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e){
-
+				if(e.getKeyCode() == KeyEvent.VK_C){
+					PolygonCanvas.clearPolygon();
+					clear();
+					panel.repaint();
+				}
 			}
 
 			@Override
@@ -152,6 +178,10 @@ public class Canvas {
 			}
 		}
 	}
+
+	public void drawPrecision(Line line){
+		lineRasterizer.
+	};
 
 	public void start() {
 		panel.repaint();
