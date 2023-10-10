@@ -4,6 +4,7 @@ import model.Line;
 import model.Point;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class LineRasterizer {
     Raster raster;
@@ -33,11 +34,30 @@ public abstract class LineRasterizer {
         drawPrecisionLine(x1,y1,x2,y2);
     }
 
+    public model.Point checkPoint(model.Point Point, ArrayList<model.Point> polygonPoints){
+            Double lowestDistance = null;
+            model.Point closestPoint = null;
+            for (model.Point o: polygonPoints) {
+                double distance = Math.hypot(o.x-Point.x, o.y-Point.y);
+                if(lowestDistance == null){
+                    lowestDistance = distance;
+                    continue;
+                }
+                if(distance < lowestDistance) {
+                    lowestDistance = distance;
+                    closestPoint = o;
+                }
+            }
+            return closestPoint;
+    }
+
     protected void drawLine(int x1, int y1, int x2, int y2) {
 
     }
 
+
     protected void drawPrecisionLine(int x1, int y1, int x2, int y2){
 
     }
+
 }

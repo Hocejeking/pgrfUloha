@@ -71,22 +71,29 @@ public class Canvas {
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
-				if(e.isControlDown()){
-					System.out.println("pressing with control");
-					mouseX = e.getX();
-					mouseY = e.getY();
-					PolygonCanvas.getVertices().add(new model.Point(mouseX,mouseY));
+				if(SwingUtilities.isLeftMouseButton(e)) {
+					if (e.isControlDown()) {
+						System.out.println("pressing with control");
+						mouseX = e.getX();
+						mouseY = e.getY();
+						PolygonCanvas.getVertices().add(new model.Point(mouseX, mouseY));
+					} else if (e.isShiftDown()) {
+						System.out.println("entering precision mode");
+						mouseX = e.getX();
+						mouseY = e.getY();
+					} else {
+						System.out.println("pressing");
+						mouseX = e.getX();
+						mouseY = e.getY();
+					}
 				}
-				else if(e.isShiftDown()){
-					System.out.println("entering precision mode");
-					mouseX = e.getX();
-					mouseY = e.getY();
-				}
-				else
-				{
-				System.out.println("pressing");
-				mouseX = e.getX();
-				mouseY = e.getY();
+				else if(SwingUtilities.isRightMouseButton(e)){
+					int rcX, rcY;
+					rcX = e.getX();
+					rcY = e.getY();
+					Point editPoint = new Point(rcX, rcY);
+					Point closesPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
+					PolygonCanvas.getVertices().remove(closesPoint);
 				}
 			}
 
@@ -99,6 +106,7 @@ public class Canvas {
 					y = e.getY();
 					drawPrecision(mouseX,x,mouseY,y);
 				}
+				else if(SwingUtilities.isRightMouseButton(e)){}
 				else {
 					System.out.println("releasing");
 					x = e.getX();
@@ -149,7 +157,6 @@ public class Canvas {
 				if(e.getKeyCode() == KeyEvent.VK_CONTROL){
 					System.out.println("control up");
 					drawPolygon(PolygonCanvas.getVertices());
-					PolygonCanvas.clearPolygon();
 					panel.repaint();
 				}
 			}

@@ -1,6 +1,7 @@
 package rasterize;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class FilledLineRasterizer extends LineRasterizer {
     int color = 220;
@@ -13,6 +14,7 @@ public class FilledLineRasterizer extends LineRasterizer {
     public void setColor(int rgb) {
         this.color = rgb;
     }
+
 
     @Override
     protected void drawPrecisionLine(int x1,int y1, int x2, int y2){
