@@ -69,7 +69,6 @@ public class Canvas {
 		//uloha do neděle 15.10?,
 
 		panel.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mousePressed(MouseEvent e){
 				if(e.isControlDown()){
@@ -98,12 +97,12 @@ public class Canvas {
 					System.out.println("releasing precision mode");
 					x = e.getX();
 					y = e.getY();
+					drawPrecision(mouseX,x,mouseY,y);
 				}
 				else {
 					System.out.println("releasing");
 					x = e.getX();
 					y = e.getY();
-					//clear();
 					draw(mouseX, x, mouseY, y, 220);
 					panel.repaint();
 				}
@@ -119,7 +118,13 @@ public class Canvas {
 					PolygonCanvas.getVertices().add(new Point(e.getX(),e .getY()));
 					drawPolygon(PolygonCanvas.getVertices());
 					panel.repaint();
-				} else {
+				}
+				else if(e.isShiftDown())
+				{
+					clear();
+					drawPrecision(mouseX,mouseY,x,y);
+				}
+				else {
 					System.out.println("dragging");
 					clear();
 					draw(mouseX, e.getX(), mouseY, e.getY(), 150);
@@ -179,8 +184,8 @@ public class Canvas {
 		}
 	}
 
-	public void drawPrecision(Line line){
-		lineRasterizer.
+	public void drawPrecision(int mouseX, int x, int mouseY,int y){
+		lineRasterizer.rasterizePrecisionMode(mouseX,mouseY,x,y);
 	};
 
 	public void start() {

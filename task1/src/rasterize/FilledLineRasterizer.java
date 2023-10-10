@@ -15,7 +15,28 @@ public class FilledLineRasterizer extends LineRasterizer {
     }
 
     @Override
-    protected void drawLine(int x1,int y1,int x2, int y2, boolean precision) {
+    protected void drawPrecisionLine(int x1,int y1, int x2, int y2){
+        System.out.println("drawing with precision");
+            // spočítat k
+            float k = (y2 - y1) / (float)(x2 - x1);
+            // spočítat q
+            float q = y1 - k * x1;
+
+            if(x1 > x2) {
+                int tmp = x1;
+                x1 = x2;
+                x2 = tmp;
+            }
+
+            for (int x = x1; x <= x2; x++) {
+                int y = Math.round(k * x + q);
+                raster.setPixel(x, y, 0xff0000);
+            }
+
+    }
+
+    @Override
+    protected void drawLine(int x1,int y1,int x2, int y2) {
         int width = x2 - x1;    //zjištění odvěsny(šířka) trojúhelníku
         int height = y2 - y1;   //zjištění odvěsny (výšky) trojúhelníku
         int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0; //rozhodovací parametry pro směr vykreslení úsečky
