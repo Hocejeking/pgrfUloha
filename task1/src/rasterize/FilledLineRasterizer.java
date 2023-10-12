@@ -13,7 +13,8 @@ public class FilledLineRasterizer extends LineRasterizer {
     public void setColor(int rgb) {
         this.color = rgb;
     }
-
+    
+    /*najít K (tan), podle té se orientovat. */
     @Override
     protected void drawPrecisionLine(int x1,int y1, int x2, int y2){
         System.out.println("drawing with precision");
