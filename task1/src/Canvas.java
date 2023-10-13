@@ -104,7 +104,11 @@ public class Canvas {
 
 			@Override
 			public void mouseReleased(MouseEvent e){
-				if(SwingUtilities.isRightMouseButton(e)){}
+				lineRasterizer.setColor(8777216);
+				if(SwingUtilities.isRightMouseButton(e)){
+					clear();
+					drawPolygon(PolygonCanvas.getVertices());
+				}
 				else if (SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()){}
 					else if(e.isShiftDown()){
@@ -117,7 +121,7 @@ public class Canvas {
 						System.out.println("releasing");
 						x = e.getX();
 						y = e.getY();
-						draw(mouseX, x, mouseY, y, 220);
+						draw(mouseX, x, mouseY, y);
 						panel.repaint();
 					}
 				}
@@ -127,6 +131,7 @@ public class Canvas {
 		panel.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
+				lineRasterizer.setColor(1400000);
 				if(SwingUtilities.isLeftMouseButton(e)){
 					if (e.isControlDown()) {
 						clear();
@@ -143,7 +148,7 @@ public class Canvas {
 					}
 					else {
 						clear();
-						drawInteractive(mouseX, e.getX(), mouseY, e.getY(), 150);
+						drawInteractive(mouseX, e.getX(), mouseY, e.getY());
 						panel.repaint();
 					}
 				} else if (SwingUtilities.isRightMouseButton(e)) {
@@ -169,9 +174,8 @@ public class Canvas {
 
 			@Override
 			public void keyReleased(KeyEvent e){
-				System.out.println("event trigg");
+				lineRasterizer.setColor(8777216);
 				if(e.getKeyCode() == KeyEvent.VK_CONTROL){
-					System.out.println("control up");
 					drawPolygon(PolygonCanvas.getVertices());
 					panel.repaint();
 				}
@@ -189,13 +193,11 @@ public class Canvas {
 		graphics.drawImage(img.getImg(), 0, 0, null);
 	}
 
-	public void draw(int x1, int x2, int y1, int y2, int color) {
-		System.out.println("drawing normal");
-		lineRasterizer.rasterize(x1, y1, x2,y2, color);
+	public void draw(int x1, int x2, int y1, int y2) {
+		lineRasterizer.rasterize(x1, y1, x2,y2);
 	}
 
-	public void drawInteractive(int x1, int x2, int y1, int y2, int color){
-		System.out.println("drawing interactive");
+	public void drawInteractive(int x1, int x2, int y1, int y2){
 		lineRasterizer.rasterizeInteractiveLine(x1,y1,x2,y2);
 	}
 
@@ -203,10 +205,10 @@ public class Canvas {
 		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
 		for(int i = 0; i < arrayPoint.length; i++){
 			if(i+1 < arrayPoint.length) {
-				lineRasterizer.rasterize(arrayPoint[i].x, arrayPoint[i].y, arrayPoint[i + 1].x, arrayPoint[i + 1].y, 250);
+				lineRasterizer.rasterize(arrayPoint[i].x, arrayPoint[i].y, arrayPoint[i + 1].x, arrayPoint[i + 1].y);
 			}
 			else{
-				lineRasterizer.rasterize(arrayPoint[i].x,arrayPoint[i].y, arrayPoint[0].x, arrayPoint[0].y,250);
+				lineRasterizer.rasterize(arrayPoint[i].x,arrayPoint[i].y, arrayPoint[0].x, arrayPoint[0].y);
 			}
 		}
 	}

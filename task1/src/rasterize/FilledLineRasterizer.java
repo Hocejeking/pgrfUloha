@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class FilledLineRasterizer extends LineRasterizer {
-    int color = 220;
+    int color;
 
     public FilledLineRasterizer(Raster raster) {
         super(raster);
@@ -23,8 +23,8 @@ public class FilledLineRasterizer extends LineRasterizer {
        double k = (double) (y2 - y1) / (x2 - x1);
         System.out.println(k);
        if(k>1){
-       }
 
+       }
     }
 
     @Override
