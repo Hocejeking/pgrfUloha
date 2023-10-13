@@ -20,6 +20,7 @@ import javax.swing.*;
 
 public class Canvas {
 
+	private int indexOfClosestPoint = 0;
 	private JFrame frame;
 	private JPanel panel;
 	private JLabel label = new JLabel();
@@ -85,34 +86,40 @@ public class Canvas {
 						System.out.println("pressing");
 						mouseX = e.getX();
 						mouseY = e.getY();
+						panel.repaint();
 					}
 				}
 				else if(SwingUtilities.isRightMouseButton(e)){
+					System.out.println("getting closeest point");
 					int rcX, rcY;
 					rcX = e.getX();
 					rcY = e.getY();
 					Point editPoint = new Point(rcX, rcY);
-					Point closesPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
-					PolygonCanvas.getVertices().remove(closesPoint);
+					Point closestPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
+					indexOfClosestPoint = PolygonCanvas.getVertices().indexOf(closestPoint);
+					if(indexOfClosestPoint == -1)
+						indexOfClosestPoint++;
 				}
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e){
-				if(e.isControlDown()){}
-				else if(e.isShiftDown()){
-					System.out.println("releasing precision mode");
-					x = e.getX();
-					y = e.getY();
-					drawPrecision(mouseX,x,mouseY,y);
-				}
-				else if(SwingUtilities.isRightMouseButton(e)){}
-				else {
-					System.out.println("releasing");
-					x = e.getX();
-					y = e.getY();
-					draw(mouseX, x, mouseY, y, 220);
-					panel.repaint();
+				if(SwingUtilities.isRightMouseButton(e)){}
+				else if (SwingUtilities.isLeftMouseButton(e)) {
+					if(e.isControlDown()){}
+					else if(e.isShiftDown()){
+						System.out.println("releasing precision mode");
+						x = e.getX();
+						y = e.getY();
+						drawPrecision(mouseX,x,mouseY,y);
+					}
+					else {
+						System.out.println("releasing");
+						x = e.getX();
+						y = e.getY();
+						draw(mouseX, x, mouseY, y, 220);
+						panel.repaint();
+					}
 				}
 			}
 		});
@@ -120,22 +127,30 @@ public class Canvas {
 		panel.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if (e.isControlDown()) {
+				if(SwingUtilities.isLeftMouseButton(e)){
+					if (e.isControlDown()) {
+						clear();
+						PolygonCanvas.getVertices().remove(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().size() - 1));
+						PolygonCanvas.getVertices().add(new Point(e.getX(),e .getY()));
+						drawInteractivePolygon(PolygonCanvas.getVertices());
+						panel.repaint();
+					}
+					else if(e.isShiftDown())
+					{
+						clear();
+						drawPrecision(mouseX,mouseY,x,y);
+						panel.repaint();
+					}
+					else {
+						clear();
+						drawInteractive(mouseX, e.getX(), mouseY, e.getY(), 150);
+						panel.repaint();
+					}
+				} else if (SwingUtilities.isRightMouseButton(e)) {
 					clear();
-					PolygonCanvas.getVertices().remove(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().size() - 1));
-					PolygonCanvas.getVertices().add(new Point(e.getX(),e .getY()));
-					drawPolygon(PolygonCanvas.getVertices());
-					panel.repaint();
-				}
-				else if(e.isShiftDown())
-				{
-					clear();
-					drawPrecision(mouseX,mouseY,x,y);
-				}
-				else {
-					System.out.println("dragging");
-					clear();
-					draw(mouseX, e.getX(), mouseY, e.getY(), 150);
+					PolygonCanvas.getVertices().remove(indexOfClosestPoint);
+					PolygonCanvas.getVertices().add(indexOfClosestPoint, new Point(e.getX(),e.getY()));
+					drawInteractivePolygon(PolygonCanvas.getVertices());
 					panel.repaint();
 				}
 			}
@@ -146,6 +161,7 @@ public class Canvas {
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode() == KeyEvent.VK_C){
 					PolygonCanvas.clearPolygon();
+					indexOfClosestPoint = 0;
 					clear();
 					panel.repaint();
 				}
@@ -174,19 +190,34 @@ public class Canvas {
 	}
 
 	public void draw(int x1, int x2, int y1, int y2, int color) {
+		System.out.println("drawing normal");
 		lineRasterizer.rasterize(x1, y1, x2,y2, color);
+	}
+
+	public void drawInteractive(int x1, int x2, int y1, int y2, int color){
+		System.out.println("drawing interactive");
+		lineRasterizer.rasterizeInteractiveLine(x1,y1,x2,y2);
 	}
 
 	public void drawPolygon(ArrayList<model.Point> PolygonPoints){
 		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
 		for(int i = 0; i < arrayPoint.length; i++){
 			if(i+1 < arrayPoint.length) {
-				System.out.println("rasterizing");
 				lineRasterizer.rasterize(arrayPoint[i].x, arrayPoint[i].y, arrayPoint[i + 1].x, arrayPoint[i + 1].y, 250);
 			}
 			else{
-				System.out.println("rasterizing last point");
 				lineRasterizer.rasterize(arrayPoint[i].x,arrayPoint[i].y, arrayPoint[0].x, arrayPoint[0].y,250);
+			}
+		}
+	}
+	public void drawInteractivePolygon(ArrayList<model.Point> PolygonPoints){
+		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
+		for(int i = 0; i < arrayPoint.length; i++){
+			if(i+1 < arrayPoint.length) {
+				lineRasterizer.rasterizeInteractiveLine(arrayPoint[i].x, arrayPoint[i].y, arrayPoint[i + 1].x, arrayPoint[i + 1].y);
+			}
+			else{
+				lineRasterizer.rasterizeInteractiveLine(arrayPoint[i].x,arrayPoint[i].y, arrayPoint[0].x, arrayPoint[0].y);
 			}
 		}
 	}
