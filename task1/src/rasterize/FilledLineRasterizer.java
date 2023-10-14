@@ -20,11 +20,38 @@ public class FilledLineRasterizer extends LineRasterizer {
 
     @Override
     protected void drawPrecisionLine(int x1,int y1, int x2, int y2){
-       double k = (double) (y2 - y1) / (x2 - x1);
-        System.out.println(k);
-       if(k>1){
+        int dx = x2 - x1; //nastavit rozdíl vzdáleností
+        int dy = y2 - y1; //nastavit rozdíl vzdáleností
 
-       }
+        if (Math.abs(dx) > Math.abs(dy)) { //zkontrolovat vzdálenost k horizontální ose
+            x2 = x1 + dx;
+            y2 = y1;
+        } else if(Math.abs(dx) < Math.abs(dy)) { //zkontrolovat vzdálenost k vertikální ose
+            x2 = x1;
+            y2 = y1 + dy;
+        } else{
+
+        }
+
+       drawLine(x1,y1,x2,y2);
+    }
+
+    @Override
+    protected void drawInteractiveDottedPrecisionline(int x1, int y1, int x2, int y2) {
+        int dx = x2 - x1; //nastavit rozdíl vzdáleností
+        int dy = y2 - y1; //nastavit rozdíl vzdáleností
+
+        if (Math.abs(dx) > Math.abs(dy)) { //zkontrolovat vzdálenost k horizontální ose
+            x2 = x1 + dx;
+            y2 = y1;
+        } else if(Math.abs(dx) < Math.abs(dy)) { //zkontrolovat vzdálenost k vertikální ose
+            x2 = x1;
+            y2 = y1 + dy;
+        } else{
+
+        }
+
+        drawInteractiveDottedLine(x1,y1,x2,y2);
     }
 
     @Override

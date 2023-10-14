@@ -48,7 +48,6 @@ public class Canvas {
 		g.setColor(Color.YELLOW);
 		panel = new JPanel() {
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -56,7 +55,7 @@ public class Canvas {
 			}
 		};
 
-		label.setText("Press and Hold ctrl for drawing Polygons; Press and Hold shift for precision mode; Press C for clearing everything");
+		label.setText("Press and Hold ctrl for drawing Polygons; Press and Hold shift for precision mode; Press C to clear; Hold ctrl + r. mouse button to edit");
 		panel.setPreferredSize(new Dimension(width, height));
 
 		frame.add(panel, BorderLayout.CENTER);
@@ -74,31 +73,29 @@ public class Canvas {
 			public void mousePressed(MouseEvent e){
 				if(SwingUtilities.isLeftMouseButton(e)) {
 					if (e.isControlDown()) {
-						System.out.println("pressing with control");
 						mouseX = e.getX();
 						mouseY = e.getY();
 						PolygonCanvas.getVertices().add(new model.Point(mouseX, mouseY));
 					} else if (e.isShiftDown()) {
-						System.out.println("entering precision mode");
 						mouseX = e.getX();
 						mouseY = e.getY();
 					} else {
-						System.out.println("pressing");
 						mouseX = e.getX();
 						mouseY = e.getY();
 						panel.repaint();
 					}
 				}
 				else if(SwingUtilities.isRightMouseButton(e)){
-					System.out.println("getting closeest point");
-					int rcX, rcY;
-					rcX = e.getX();
-					rcY = e.getY();
-					Point editPoint = new Point(rcX, rcY);
-					Point closestPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
-					indexOfClosestPoint = PolygonCanvas.getVertices().indexOf(closestPoint);
-					if(indexOfClosestPoint == -1)
-						indexOfClosestPoint++;
+					if(e.isControlDown()) {
+						int rcX, rcY;
+						rcX = e.getX();
+						rcY = e.getY();
+						Point editPoint = new Point(rcX, rcY);
+						Point closestPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
+						indexOfClosestPoint = PolygonCanvas.getVertices().indexOf(closestPoint);
+						if (indexOfClosestPoint == -1)
+							indexOfClosestPoint++;
+					}
 				}
 			}
 
@@ -108,17 +105,17 @@ public class Canvas {
 				if(SwingUtilities.isRightMouseButton(e)){
 					clear();
 					drawPolygon(PolygonCanvas.getVertices());
+					panel.repaint();
 				}
 				else if (SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()){}
 					else if(e.isShiftDown()){
-						System.out.println("releasing precision mode");
 						x = e.getX();
 						y = e.getY();
 						drawPrecision(mouseX,x,mouseY,y);
+						panel.repaint();
 					}
 					else {
-						System.out.println("releasing");
 						x = e.getX();
 						y = e.getY();
 						draw(mouseX, x, mouseY, y);
@@ -143,7 +140,7 @@ public class Canvas {
 					else if(e.isShiftDown())
 					{
 						clear();
-						drawPrecision(mouseX,mouseY,x,y);
+						drawInteractivePrecision(mouseX,e.getX(),mouseY,e.getY());
 						panel.repaint();
 					}
 					else {
@@ -152,11 +149,13 @@ public class Canvas {
 						panel.repaint();
 					}
 				} else if (SwingUtilities.isRightMouseButton(e)) {
-					clear();
-					PolygonCanvas.getVertices().remove(indexOfClosestPoint);
-					PolygonCanvas.getVertices().add(indexOfClosestPoint, new Point(e.getX(),e.getY()));
-					drawInteractivePolygon(PolygonCanvas.getVertices());
-					panel.repaint();
+					if(e.isControlDown()) {
+						clear();
+						PolygonCanvas.getVertices().remove(indexOfClosestPoint);
+						PolygonCanvas.getVertices().add(indexOfClosestPoint, new Point(e.getX(), e.getY()));
+						drawInteractivePolygon(PolygonCanvas.getVertices());
+						panel.repaint();
+					}
 				}
 			}
 		});
@@ -226,7 +225,11 @@ public class Canvas {
 
 	public void drawPrecision(int mouseX, int x, int mouseY,int y){
 		lineRasterizer.rasterizePrecisionMode(mouseX,mouseY,x,y);
-	};
+	}
+
+	public void drawInteractivePrecision(int mouseX,int x, int mouseY, int y){
+		lineRasterizer.rasterizeInteractivePrecisionLine(mouseX, mouseY, x,y);
+	}
 
 	public void start() {
 		panel.repaint();

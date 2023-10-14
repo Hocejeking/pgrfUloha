@@ -35,6 +35,7 @@ public abstract class LineRasterizer {
     }
 
     public void rasterizeInteractiveLine(int x1, int y1, int x2, int y2) {drawInteractiveDottedLine(x1,y1,x2,y2);}
+    public void rasterizeInteractivePrecisionLine(int x1, int y1, int x2, int y2){drawInteractiveDottedPrecisionline(x1, y1, x2, y2);}
 
     public model.Point checkPoint(model.Point Point, ArrayList<model.Point> polygonPoints){
             Double lowestDistance = null;
@@ -53,17 +54,12 @@ public abstract class LineRasterizer {
             return closestPoint;
     }
 
-    protected void drawLine(int x1, int y1, int x2, int y2) {
+    protected void drawLine(int x1, int y1, int x2, int y2) {}
 
-    }
+    protected void drawPrecisionLine(int x1, int y1, int x2, int y2){}
 
+    protected void drawInteractiveDottedLine(int x1, int y1, int x2, int y2){}
 
-    protected void drawPrecisionLine(int x1, int y1, int x2, int y2){
-
-    }
-
-    protected void drawInteractiveDottedLine(int x1, int y1, int x2, int y2){
-
-    }
+    protected void drawInteractiveDottedPrecisionline(int x1, int y1, int x2, int y2){}
 
 }
