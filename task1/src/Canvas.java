@@ -64,6 +64,11 @@ public class Canvas {
 
 		panel.requestFocus();
 		panel.requestFocusInWindow();
+<<<<<<< HEAD
+=======
+		//bitová hloubka, náročnost na paměť, co je rastr, co je pixel, bit/byte, java proměnna, atomicka, instance tříd, konstruktor, co to je, jak vytrořit instani třídy, abstraktní, interace, set,get ,private, public, přiřazování proměnných, jak rasterizovat usečku, nějakej předpis přímky, co jednozlivý písmenka v předpisu znamenají
+		//uloha do neděle 15.10?,
+>>>>>>> parent of 4820d64 (added comments, removed unused things)
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
