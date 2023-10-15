@@ -33,7 +33,7 @@ public class FilledLineRasterizer extends LineRasterizer {
 
         }
 
-       drawLine(x1,y1,x2,y2);
+       drawLine(x1,y1,x2,y2);//volání metody drawLine pro vykreslení úsečky
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FilledLineRasterizer extends LineRasterizer {
 
         }
 
-        drawInteractiveDottedLine(x1,y1,x2,y2);
+        drawInteractiveDottedLine(x1,y1,x2,y2);//volání metody drawInteractiveDottedLine pro vykreslení tečkované úsečky
     }
 
     @Override
@@ -79,15 +79,15 @@ public class FilledLineRasterizer extends LineRasterizer {
 
     @Override
     protected void drawInteractiveDottedLine(int x1, int y1, int x2, int y2) {
-        int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;
-        int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;
-        int err = dx + dy, e2;
+        int dx = abs(x2 - x1), sx = x1 < x2 ? 1 : -1;//nastavíme směr pohybu (doleva[-1], doprava[1])
+        int dy = -abs(y2 - y1), sy = y1 < y2 ? 1 : -1;//nastavíme směr pohybu (dolů[-1], nahoru[1])
+        int err = dx + dy, e2;//nastavíme chybu
         int count = 0;
         while (true) {
             if (count < 3) { //první 3 iterace vykreslíme bod a poté 7 iterací mezera
                 raster.setPixel(x1, y1, color); //vykreslí bod
             }
-            if (x1 == x2 && y1 == y2) break;
+            if (x1 == x2 && y1 == y2) break;// podmínka pro určení směru pohybu
             e2 = 2 * err;
             if (e2 > dy) {
                 err += dy;
@@ -100,4 +100,9 @@ public class FilledLineRasterizer extends LineRasterizer {
             count = (count + 1) % 10; //Zde nám modulo vyresetuje count - tudíž každý 10 krok je count znovu 0 a to nám určuje mezeru mezi vykreslenými pixely
         }
     }
-}
+
+
+
+
+    }
+
