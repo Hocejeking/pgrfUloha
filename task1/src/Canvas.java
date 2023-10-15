@@ -64,11 +64,6 @@ public class Canvas {
 
 		panel.requestFocus();
 		panel.requestFocusInWindow();
-<<<<<<< HEAD
-=======
-		//bitová hloubka, náročnost na paměť, co je rastr, co je pixel, bit/byte, java proměnna, atomicka, instance tříd, konstruktor, co to je, jak vytrořit instani třídy, abstraktní, interace, set,get ,private, public, přiřazování proměnných, jak rasterizovat usečku, nějakej předpis přímky, co jednozlivý písmenka v předpisu znamenají
-		//uloha do neděle 15.10?,
->>>>>>> parent of 4820d64 (added comments, removed unused things)
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -97,6 +92,59 @@ public class Canvas {
 						indexOfClosestPoint = PolygonCanvas.getVertices().indexOf(closestPoint);
 						if (indexOfClosestPoint == -1)
 							indexOfClosestPoint++;
+					}
+				}
+				else if(SwingUtilities.isMiddleMouseButton(e)){
+					if(e.isControlDown()){
+						if(e.isAltDown()) {
+							int rcX, rcY;
+							rcX = e.getX();
+							rcY = e.getY();
+							Point editPoint = new Point(rcX, rcY);
+							Point closestPoint = lineRasterizer.checkForClosestPoint(editPoint, PolygonCanvas.getVertices());
+							int indexOfClosestPointToDelete = PolygonCanvas.getVertices().indexOf(closestPoint);
+							if (indexOfClosestPointToDelete == -1)
+								indexOfClosestPointToDelete++;
+							PolygonCanvas.getVertices().remove(indexOfClosestPointToDelete);
+						}
+						else{
+							System.out.println("adding point");
+							int rcX, rcY;
+							rcX = e.getX();
+							rcY = e.getY();
+							Point pointToAdd = new Point(rcX,rcY);
+							Point closestPoint = lineRasterizer.checkForClosestPoint(pointToAdd, PolygonCanvas.getVertices());
+							Double ClosestPointBackwards=null;
+							Double ClosestPointForward=null;
+
+							if((PolygonCanvas.getVertices().indexOf(closestPoint) + 1 )>=0) {
+								System.out.println("closest is forward");
+								ClosestPointForward = lineRasterizer.checkForClosestPoint(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().indexOf(closestPoint) + 1), PolygonCanvas.getVertices(), true);
+							}
+							else if((PolygonCanvas.getVertices().indexOf(closestPoint)- 1)>=0) {
+								System.out.println("closest is backwards");
+								ClosestPointBackwards = lineRasterizer.checkForClosestPoint(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().indexOf(closestPoint) - 1), PolygonCanvas.getVertices(), true);
+							}
+
+							if(ClosestPointBackwards == null){
+								PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) + 1, pointToAdd);
+							}
+							else if(ClosestPointForward == null){
+								PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) - 1, pointToAdd);
+							}
+							else {
+								if (ClosestPointBackwards > ClosestPointForward) {
+									System.out.println("adding forwards");
+									PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) + 1, pointToAdd);
+								} else if (ClosestPointBackwards < ClosestPointForward) {
+									System.out.println("adding backwards");
+									PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) - 1, pointToAdd);
+								}
+							}
+						}
+						clear();
+						drawPolygon(PolygonCanvas.getVertices());
+						panel.repaint();
 					}
 				}
 			}
