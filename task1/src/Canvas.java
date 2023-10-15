@@ -3,7 +3,6 @@ import model.Polygon;
 import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
 import rasterize.RasterBufferedImage;
-import model.*;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -65,8 +64,6 @@ public class Canvas {
 
 		panel.requestFocus();
 		panel.requestFocusInWindow();
-		//bitová hloubka, náročnost na paměť, co je rastr, co je pixel, bit/byte, java proměnna, atomicka, instance tříd, konstruktor, co to je, jak vytrořit instani třídy, abstraktní, interace, set,get ,private, public, přiřazování proměnných, jak rasterizovat usečku, nějakej předpis přímky, co jednozlivý písmenka v předpisu znamenají
-		//uloha do neděle 15.10?,
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -91,7 +88,7 @@ public class Canvas {
 						rcX = e.getX();
 						rcY = e.getY();
 						Point editPoint = new Point(rcX, rcY);
-						Point closestPoint = lineRasterizer.checkPoint(editPoint, PolygonCanvas.getVertices());
+						Point closestPoint = lineRasterizer.checkForClosestPoint(editPoint, PolygonCanvas.getVertices());
 						indexOfClosestPoint = PolygonCanvas.getVertices().indexOf(closestPoint);
 						if (indexOfClosestPoint == -1)
 							indexOfClosestPoint++;
