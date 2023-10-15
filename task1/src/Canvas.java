@@ -65,13 +65,15 @@ public class Canvas {
 
 		panel.requestFocus();
 		panel.requestFocusInWindow();
-		//bitová hloubka, náročnost na paměť, co je rastr, co je pixel, bit/byte, java proměnna, atomicka, instance tříd, konstruktor, co to je, jak vytrořit instani třídy, abstraktní, interace, set,get ,private, public, přiřazování proměnných, jak rasterizovat usečku, nějakej předpis přímky, co jednozlivý písmenka v předpisu znamenají
-		//uloha do neděle 15.10?,
+		/*bitová hloubka, náročnost na paměť, co je rastr, co je pixel, bit/byte, java proměnna, atomicka, instance tříd, konstruktor,
+		 co to je, jak vytrořit instani třídy, abstraktní, interace, set,get ,private, public, přiřazování proměnných,
+		 jak rasterizovat usečku, nějakej předpis přímky, co jednozlivý písmenka v předpisu znamenají
+		uloha do neděle 15.10?,*/
 
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e){
-				if(SwingUtilities.isLeftMouseButton(e)) {
+				if(SwingUtilities.isLeftMouseButton(e)) {//podle stisknuté klávesi vybere co má vykreslit
 					if (e.isControlDown()) {
 						mouseX = e.getX();
 						mouseY = e.getY();
@@ -102,7 +104,7 @@ public class Canvas {
 			@Override
 			public void mouseReleased(MouseEvent e){
 				lineRasterizer.setColor(8777216);
-				if(SwingUtilities.isRightMouseButton(e)){
+				if(SwingUtilities.isRightMouseButton(e)){//podle stisknuté klávesi vybere co má vykreslit
 					clear();
 					drawPolygon(PolygonCanvas.getVertices());
 					panel.repaint();
@@ -129,7 +131,7 @@ public class Canvas {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				lineRasterizer.setColor(1400000);
-				if(SwingUtilities.isLeftMouseButton(e)){
+				if(SwingUtilities.isLeftMouseButton(e)){//podle stisknuté klávesi vybere co má vykreslit
 					if (e.isControlDown()) {
 						clear();
 						PolygonCanvas.getVertices().remove(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().size() - 1));
@@ -162,7 +164,7 @@ public class Canvas {
 
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e){
+			public void keyPressed(KeyEvent e){// po stisknutí klávesi C vyčistí plochu
 				if(e.getKeyCode() == KeyEvent.VK_C){
 					PolygonCanvas.clearPolygon();
 					indexOfClosestPoint = 0;
@@ -182,7 +184,7 @@ public class Canvas {
 		});
 	}
 
-	public void clear() {
+	public void clear() { // nastaví základní podkladovou barvu
 		Graphics gr = img.getGraphics();
 		gr.setColor(new Color(0x2f2f2f));
 		gr.fillRect(0, 0, img.getWidth(), img.getHeight());
@@ -200,7 +202,7 @@ public class Canvas {
 		lineRasterizer.rasterizeInteractiveLine(x1,y1,x2,y2);
 	}
 
-	public void drawPolygon(ArrayList<model.Point> PolygonPoints){
+	public void drawPolygon(ArrayList<model.Point> PolygonPoints){ // vykreslí polygon plnou čarou
 		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
 		for(int i = 0; i < arrayPoint.length; i++){
 			if(i+1 < arrayPoint.length) {
@@ -211,7 +213,7 @@ public class Canvas {
 			}
 		}
 	}
-	public void drawInteractivePolygon(ArrayList<model.Point> PolygonPoints){
+	public void drawInteractivePolygon(ArrayList<model.Point> PolygonPoints){ //vykreslí polygon tečkovanou čarou
 		model.Point[] arrayPoint = PolygonPoints.toArray(new model.Point[PolygonPoints.size()]);
 		for(int i = 0; i < arrayPoint.length; i++){
 			if(i+1 < arrayPoint.length) {

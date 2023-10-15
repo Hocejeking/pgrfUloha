@@ -33,17 +33,6 @@ public class Panel extends JPanel {
         // pro zájemce - co dělá observer - https://stackoverflow.com/a/1684476
     }
 
-    public void resize(){
-        if (this.getWidth()<1 || this.getHeight()<1)
-            return;
-        if (this.getWidth()<=raster.getWidth() && this.getHeight()<=raster.getHeight()) //no resize if new is smaller
-            return;
-        RasterBufferedImage newRaster = new RasterBufferedImage(this.getWidth(), this.getHeight());
-
-        newRaster.draw(raster);
-        raster = newRaster;
-    }
-
     private void setLoop() {
         // časovač, který 30 krát za vteřinu obnoví obsah plátna aktuálním img
         new Timer().schedule(new TimerTask() {
