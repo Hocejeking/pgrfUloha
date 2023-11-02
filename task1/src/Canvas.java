@@ -1,3 +1,5 @@
+import Fill.SeedFill4;
+import Fill.SeedFill8;
 import model.Point;
 import model.Polygon;
 import rasterize.FilledLineRasterizer;
@@ -25,6 +27,7 @@ public class Canvas {
 	private JLabel label = new JLabel();
 	private RasterBufferedImage img;
 	private LineRasterizer lineRasterizer;
+	private SeedFill4 filler = new SeedFill4();
 	private int x,y;
 	private int mouseX, mouseY;
 	private Polygon PolygonCanvas = new Polygon();
@@ -76,7 +79,8 @@ public class Canvas {
 					} else if (e.isShiftDown()) {
 						mouseX = e.getX();
 						mouseY = e.getY();
-					} else {
+					}
+					else {
 						mouseX = e.getX();
 						mouseY = e.getY();
 						panel.repaint();
@@ -163,6 +167,12 @@ public class Canvas {
 						x = e.getX();
 						y = e.getY();
 						drawPrecision(mouseX,x,mouseY,y);
+						panel.repaint();
+					}
+					else if(e.isAltDown()){
+						x = e.getX();
+						y = e.getY();
+						filler.fill(img,x,y,8777216);
 						panel.repaint();
 					}
 					else {

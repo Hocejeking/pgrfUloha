@@ -44,4 +44,21 @@ public class Line {
         return color;
     }
 
+    /*public boolean isHorizontal(){
+
+    }
+
+    public boolean oriented(){
+
+    }
+
+    public boolean hasYIntercept(double y){
+
+    }
+
+    public double yIntercept(double y){
+
+    }
+     */
+
 }
