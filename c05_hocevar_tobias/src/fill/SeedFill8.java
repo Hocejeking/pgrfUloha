@@ -1,8 +1,6 @@
-package Fill;
+package fill;
 
 import rasterize.Raster;
-
-import java.util.function.Predicate;
 
 public class SeedFill8 implements SeedFill{
 

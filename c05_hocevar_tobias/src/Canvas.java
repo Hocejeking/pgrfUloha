@@ -1,5 +1,4 @@
-import Fill.SeedFill4;
-import Fill.SeedFill8;
+import fill.SeedFill4;
 import model.Point;
 import model.Polygon;
 import model.RectanglePolygon;

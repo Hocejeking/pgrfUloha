@@ -1,4 +1,4 @@
-package Fill;
+package fill;
 
 import rasterize.Raster;
 import model.*;

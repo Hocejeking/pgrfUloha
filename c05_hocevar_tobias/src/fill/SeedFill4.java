@@ -1,9 +1,6 @@
-package Fill;
+package fill;
 
 import rasterize.Raster;
-
-import java.awt.*;
-import java.util.function.Predicate;
 
 public class SeedFill4  implements  SeedFill{
     @Override
