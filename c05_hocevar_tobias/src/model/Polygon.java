@@ -5,8 +5,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Polygon {
-    private ArrayList<Point> polygonVertices = new ArrayList<>();
-    private ArrayList<Line> polygonLines = new ArrayList<Line>();
+    protected ArrayList<Point> polygonVertices = new ArrayList<>();
+    protected ArrayList<Line> polygonLines = new ArrayList<Line>();
     public int color;
 
     public Polygon(){
@@ -28,6 +28,7 @@ public class Polygon {
     }
 
     public ArrayList<Line> getLines() {
+        generateLines(); //make sure we have the current lines.
         return polygonLines;
     }
 
@@ -39,7 +40,7 @@ public class Polygon {
         polygonVertices.clear();
     }
 
-    private void generateLines(){
+    protected void generateLines(){
         Point[] arrayPoint = polygonVertices.toArray(new Point[polygonVertices.size()]);
         for(int i = 0; i < arrayPoint.length; i++){
             if(i+1 < arrayPoint.length) {

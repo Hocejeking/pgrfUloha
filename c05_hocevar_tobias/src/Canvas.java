@@ -2,6 +2,7 @@ import Fill.SeedFill4;
 import Fill.SeedFill8;
 import model.Point;
 import model.Polygon;
+import model.RectanglePolygon;
 import rasterize.FilledLineRasterizer;
 import rasterize.LineRasterizer;
 import rasterize.RasterBufferedImage;
@@ -31,19 +32,20 @@ public class Canvas {
 	private int x,y;
 	private int mouseX, mouseY;
 	private Polygon PolygonCanvas = new Polygon();
+	private RectanglePolygon rectanglePolygon;
 
 	public Canvas(int width, int height) {
 		x = width / 2;
 		y = height / 2;
 
 		frame = new JFrame();
-
 		frame.setLayout(new BorderLayout());
 		frame.setTitle("UHK FIM PGRF : " + this.getClass().getName());
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		img = new RasterBufferedImage(width, height);
+		img.setClearColor(0);
 		lineRasterizer = new FilledLineRasterizer(img);
 
 		Graphics g = img.getGraphics();
@@ -112,7 +114,6 @@ public class Canvas {
 							PolygonCanvas.getVertices().remove(indexOfClosestPointToDelete);
 						}
 						else{
-							System.out.println("adding point");
 							int rcX, rcY;
 							rcX = e.getX();
 							rcY = e.getY();
@@ -122,11 +123,9 @@ public class Canvas {
 							Double ClosestPointForward=null;
 
 							if((PolygonCanvas.getVertices().indexOf(closestPoint) + 1 )>=0) {
-								System.out.println("closest is forward");
 								ClosestPointForward = lineRasterizer.checkForClosestPoint(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().indexOf(closestPoint) + 1), PolygonCanvas.getVertices(), true);
 							}
 							else if((PolygonCanvas.getVertices().indexOf(closestPoint)- 1)>=0) {
-								System.out.println("closest is backwards");
 								ClosestPointBackwards = lineRasterizer.checkForClosestPoint(PolygonCanvas.getVertices().get(PolygonCanvas.getVertices().indexOf(closestPoint) - 1), PolygonCanvas.getVertices(), true);
 							}
 
@@ -138,10 +137,8 @@ public class Canvas {
 							}
 							else {
 								if (ClosestPointBackwards > ClosestPointForward) {
-									System.out.println("adding forwards");
 									PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) + 1, pointToAdd);
 								} else if (ClosestPointBackwards < ClosestPointForward) {
-									System.out.println("adding backwards");
 									PolygonCanvas.getVertices().add(PolygonCanvas.getVertices().indexOf(closestPoint) - 1, pointToAdd);
 								}
 							}
@@ -170,9 +167,10 @@ public class Canvas {
 						panel.repaint();
 					}
 					else if(e.isAltDown()){
+						System.out.println("this works");
 						x = e.getX();
 						y = e.getY();
-						filler.fill(img,x,y,8777216);
+						filler.fill(img,x,y,0, 8777216);
 						panel.repaint();
 					}
 					else {
@@ -244,7 +242,8 @@ public class Canvas {
 
 	public void clear() {
 		Graphics gr = img.getGraphics();
-		gr.setColor(new Color(0x2f2f2f));
+		img.clear();
+		gr.setColor(new Color(0));
 		gr.fillRect(0, 0, img.getWidth(), img.getHeight());
 	}
 
