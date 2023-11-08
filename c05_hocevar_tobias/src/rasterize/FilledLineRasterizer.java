@@ -100,9 +100,5 @@ public class FilledLineRasterizer extends LineRasterizer {
             count = (count + 1) % 10; //Zde nám modulo vyresetuje count - tudíž každý 10 krok je count znovu 0 a to nám určuje mezeru mezi vykreslenými pixely
         }
     }
-
-
-
-
     }
 

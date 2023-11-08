@@ -1,3 +1,4 @@
+import fill.ScanLine;
 import fill.SeedFill4;
 import model.Point;
 import model.Polygon;
@@ -28,6 +29,7 @@ public class Canvas {
 	private RasterBufferedImage img;
 	private LineRasterizer lineRasterizer;
 	private SeedFill4 filler = new SeedFill4();
+	private ScanLine scanLine = new ScanLine();
 	private int x,y;
 	private int mouseX, mouseY;
 	private Polygon PolygonCanvas = new Polygon();
@@ -169,7 +171,8 @@ public class Canvas {
 						System.out.println("this works");
 						x = e.getX();
 						y = e.getY();
-						filler.fill(img,x,y,0, 8777216);
+						//filler.fill(img,x,y,0, 8777216);
+						ScanLine.fill(img,PolygonCanvas,8777216,800,600);
 						panel.repaint();
 					}
 					else {
