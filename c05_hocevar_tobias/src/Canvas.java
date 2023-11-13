@@ -168,17 +168,20 @@ public class Canvas {
 						panel.repaint();
 					}
 					else if(e.isAltDown()){
-						System.out.println("this works");
 						x = e.getX();
 						y = e.getY();
-						//filler.fill(img,x,y,0, 8777216);
 						ScanLine.fill(img,PolygonCanvas,8777216,800,600);
+						ScanLine.fill(img, rectanglePolygon,8777216,800,600);
 						panel.repaint();
 					}
 					else {
 						x = e.getX();
 						y = e.getY();
-						draw(mouseX, x, mouseY, y);
+						rectanglePolygon = new RectanglePolygon(new Point(mouseX,mouseY), new Point(x,y));
+						drawPolygon(rectanglePolygon.getVertices());
+						Point center = rectanglePolygon.returnCenterPointsForElipse();
+						ArrayList<Integer> radius = rectanglePolygon.returnRadiusOfElipse();
+						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2 );
 						panel.repaint();
 					}
 				}
@@ -205,7 +208,10 @@ public class Canvas {
 					}
 					else {
 						clear();
-						drawInteractive(mouseX, e.getX(), mouseY, e.getY());
+						x = e.getX();
+						y = e.getY();
+						rectanglePolygon = new RectanglePolygon(new Point(mouseX,mouseY), new Point(x,y));
+						drawInteractivePolygon(rectanglePolygon.getVertices());
 						panel.repaint();
 					}
 				} else if (SwingUtilities.isRightMouseButton(e)) {
@@ -224,9 +230,10 @@ public class Canvas {
 			@Override
 			public void keyPressed(KeyEvent e){
 				if(e.getKeyCode() == KeyEvent.VK_C){
+					clear();
 					PolygonCanvas.clearPolygon();
 					indexOfClosestPoint = 0;
-					clear();
+					if(rectanglePolygon != null){rectanglePolygon.clearPolygon();}
 					panel.repaint();
 				}
 			}
@@ -246,6 +253,7 @@ public class Canvas {
 		Graphics gr = img.getGraphics();
 		img.clear();
 		gr.setColor(new Color(0));
+
 		gr.fillRect(0, 0, img.getWidth(), img.getHeight());
 	}
 
@@ -290,6 +298,10 @@ public class Canvas {
 
 	public void drawInteractivePrecision(int mouseX,int x, int mouseY, int y){
 		lineRasterizer.rasterizeInteractivePrecisionLine(mouseX, mouseY, x,y);
+	}
+
+	public void drawElipse(int centerX, int centerY, int radiusX, int radiusY){
+		lineRasterizer.rasterizeElipse(centerX,centerY,radiusX,radiusY);
 	}
 
 	public void start() {

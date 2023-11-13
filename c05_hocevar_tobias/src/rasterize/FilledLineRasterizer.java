@@ -100,5 +100,23 @@ public class FilledLineRasterizer extends LineRasterizer {
             count = (count + 1) % 10; //Zde nám modulo vyresetuje count - tudíž každý 10 krok je count znovu 0 a to nám určuje mezeru mezi vykreslenými pixely
         }
     }
+
+    @Override
+    protected  void drawElipse(int centerX,int centerY, double radiusX, double radiusY){
+        double px =0, py=0;
+
+        for (int i = 0; i <= 360; i++) {
+            double x, y;
+            x = radiusX * Math.sin(Math.toRadians(i));
+            y = radiusY * Math.cos(Math.toRadians(i));
+
+            if (i != 0) {
+                this.drawLine((int) px + centerX, (int) py + centerY, (int) x + centerX, (int) y + centerY);
+            }
+
+            px = x;
+            py = y;
+        }
+    }
     }
 

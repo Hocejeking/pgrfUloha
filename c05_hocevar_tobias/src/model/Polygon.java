@@ -9,9 +9,7 @@ public class Polygon {
     protected ArrayList<Line> polygonLines = new ArrayList<Line>();
     public int color;
 
-    public Polygon(){
-
-    }
+    public Polygon(){}
 
     public Polygon(ArrayList<Point> polygonVertices, int color){
             this.polygonVertices = polygonVertices;
@@ -19,9 +17,7 @@ public class Polygon {
             generateLines();
     }
 
-    public ArrayList<Point> getVertices(){
-        return polygonVertices;
-    }
+    public ArrayList<Point> getVertices(){return polygonVertices;}
 
     public void setVertices(ArrayList<Point> vertices){
         this.polygonVertices = vertices;
@@ -37,6 +33,7 @@ public class Polygon {
     }
 
     public void clearPolygon(){
+        if(polygonVertices.isEmpty()){return;}
         polygonVertices.clear();
     }
 

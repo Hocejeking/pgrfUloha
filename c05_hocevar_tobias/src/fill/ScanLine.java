@@ -9,6 +9,7 @@ import java.util.List;
 
 public class ScanLine {
     public static void fill(Raster img, Polygon pl, int fillColor, int canvasWidth, int canvasHeight ) {
+        if(pl == null){return;}
         int min_y = Integer.MAX_VALUE;
         int max_y = Integer.MIN_VALUE;
 

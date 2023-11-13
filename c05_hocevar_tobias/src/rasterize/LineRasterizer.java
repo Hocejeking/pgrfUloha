@@ -33,6 +33,8 @@ public abstract class LineRasterizer {
         drawPrecisionLine(x1,y1,x2,y2);
     }
 
+    public void rasterizeElipse(int centerX,int centerY, double radiusX, double radiusY){drawElipse(centerX,centerY,radiusX,radiusY);}
+
     public void rasterizeInteractiveLine(int x1, int y1, int x2, int y2) {drawInteractiveDottedLine(x1,y1,x2,y2);}
     public void rasterizeInteractivePrecisionLine(int x1, int y1, int x2, int y2){drawInteractiveDottedPrecisionline(x1, y1, x2, y2);}
 
@@ -77,5 +79,7 @@ public abstract class LineRasterizer {
     protected void drawInteractiveDottedLine(int x1, int y1, int x2, int y2){}
 
     protected void drawInteractiveDottedPrecisionline(int x1, int y1, int x2, int y2){}
+
+    protected void drawElipse(int centerX,int centerY, double radiusX, double radiusY){}
 
 }
