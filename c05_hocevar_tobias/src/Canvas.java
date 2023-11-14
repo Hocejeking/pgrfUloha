@@ -1,5 +1,6 @@
 import fill.ScanLine;
 import fill.SeedFill4;
+import model.Elipsis;
 import model.Point;
 import model.Polygon;
 import model.RectanglePolygon;
@@ -34,6 +35,7 @@ public class Canvas {
 	private int mouseX, mouseY;
 	private Polygon PolygonCanvas = new Polygon();
 	private RectanglePolygon rectanglePolygon;
+	private Elipsis elipsisPolygon;
 
 	public Canvas(int width, int height) {
 		x = width / 2;
@@ -170,8 +172,8 @@ public class Canvas {
 					else if(e.isAltDown()){
 						x = e.getX();
 						y = e.getY();
-						ScanLine.fill(img,PolygonCanvas,8777216,800,600);
-						ScanLine.fill(img, rectanglePolygon,8777216,800,600);
+						ScanLine.fill(img,PolygonCanvas,8777216);
+						ScanLine.fill(img, rectanglePolygon,8777216);
 						panel.repaint();
 					}
 					else {
@@ -181,6 +183,7 @@ public class Canvas {
 						drawPolygon(rectanglePolygon.getVertices());
 						Point center = rectanglePolygon.returnCenterPointsForElipse();
 						ArrayList<Integer> radius = rectanglePolygon.returnRadiusOfElipse();
+						elipsisPolygon = new Elipsis(center.x, center.y,radius.get(0) /2,radius.get(1)/2 );
 						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2 );
 						panel.repaint();
 					}

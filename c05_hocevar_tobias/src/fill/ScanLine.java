@@ -8,10 +8,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class ScanLine {
-    public static void fill(Raster img, Polygon pl, int fillColor, int canvasWidth, int canvasHeight ) {
+    public static void fill(Raster img, Polygon pl, int fillColor) {
         if(pl == null){return;}
         int min_y = Integer.MAX_VALUE;
         int max_y = Integer.MIN_VALUE;
+        int canvasWidth = img.getWidth();
+        int canvasHeight = img.getHeight();
 
         for (Point point : pl.getVertices()) {
             min_y = Math.min(min_y, point.y);
