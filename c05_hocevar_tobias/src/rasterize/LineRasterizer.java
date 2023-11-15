@@ -1,5 +1,6 @@
 package rasterize;
 
+import model.Elipsis;
 import model.Line;
 
 import java.awt.*;
@@ -33,7 +34,7 @@ public abstract class LineRasterizer {
         drawPrecisionLine(x1,y1,x2,y2);
     }
 
-    public void rasterizeElipse(int centerX,int centerY, double radiusX, double radiusY){drawElipse(centerX,centerY,radiusX,radiusY);}
+    public void rasterizeElipse(int centerX, int centerY, double radiusX, double radiusY, Elipsis elipsis){drawElipse(centerX,centerY,radiusX,radiusY, elipsis);}
 
     public void rasterizeInteractiveLine(int x1, int y1, int x2, int y2) {drawInteractiveDottedLine(x1,y1,x2,y2);}
     public void rasterizeInteractivePrecisionLine(int x1, int y1, int x2, int y2){drawInteractiveDottedPrecisionline(x1, y1, x2, y2);}
@@ -80,6 +81,6 @@ public abstract class LineRasterizer {
 
     protected void drawInteractiveDottedPrecisionline(int x1, int y1, int x2, int y2){}
 
-    protected void drawElipse(int centerX,int centerY, double radiusX, double radiusY){}
+    protected void drawElipse(int centerX,int centerY, double radiusX, double radiusY, Elipsis elipsis){}
 
 }

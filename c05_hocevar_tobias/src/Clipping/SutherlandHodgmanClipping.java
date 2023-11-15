@@ -20,7 +20,7 @@ public class SutherlandHodgmanClipping {
         for (int i = 0; i < clipPolygon.getVertices().size(); i++) {
             int nexti = (i + 1) % clipPolygon.getVertices().size();
 
-            // Vytvoříme kopii outputList (oříznutý polygon) pro další operace
+            // Vytvoříme kopii outputList (oříznutý polygon) pro další postup
             ArrayList<Point> inputList = new ArrayList<>(outputList);
             outputList.clear(); // Vyčistíme outputList pro nový oříznutý polygon
 
@@ -35,20 +35,20 @@ public class SutherlandHodgmanClipping {
 
                 // Kontrola, zda je bod Q uvnitř hrany definované body S a E
                 if (isInside(S, E, Q)) {
-                    // Kontrola, zda je bod P vně hrany definované body S a E
+                    // Kontrola, zda je bod P vevnitř hrany definované body S a E
                     if (!isInside(S, E, P)) {
-                        // Vypočteme průsečík hran (S-E) a (P-Q) a přidáme ho do outputList
+                        // Vypočteme průsečík hran (S-E) a (P-Q) a přidáme ho do outputListu
                         outputList.add(computeIntersection(S, E, P, Q));
                     }
-                    // Přidáme bod Q do outputList
+                    // Přidáme bod Q do outputListu
                     outputList.add(Q);
                 } else if (isInside(S, E, P)) {
-                    // Pokud je bod P uvnitř hrany definované body S a E, přidáme ho do outputList
+                    // Pokud je bod P uvnitř hrany definované body S a E, přidáme ho do outputListu
                     outputList.add(computeIntersection(S, E, P, Q));
                 }
             }
         }
-        return outputList; // Vrátíme výsledný oříznutý polygon
+        return outputList; // Vrátíme výsledek
     }
 
 

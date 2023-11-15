@@ -1,5 +1,9 @@
 package rasterize;
 
+import model.Elipsis;
+import model.Line;
+import model.Point;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -102,7 +106,7 @@ public class FilledLineRasterizer extends LineRasterizer {
     }
 
     @Override
-    protected  void drawElipse(int centerX,int centerY, double radiusX, double radiusY){
+    protected  void drawElipse(int centerX, int centerY, double radiusX, double radiusY, Elipsis elipsis){
         double px =0, py=0;
 
         for (int i = 0; i <= 360; i++) {
@@ -112,6 +116,7 @@ public class FilledLineRasterizer extends LineRasterizer {
 
             if (i != 0) {
                 this.drawLine((int) px + centerX, (int) py + centerY, (int) x + centerX, (int) y + centerY);
+                elipsis.addLine(new Line(new Point((int) px + centerX, (int) py + centerY),new Point( (int) x + centerX, (int) y + centerY),84156463));
             }
 
             px = x;

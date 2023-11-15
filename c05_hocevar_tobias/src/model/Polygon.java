@@ -52,13 +52,11 @@ public class Polygon {
 
     public static ArrayList<Point> sortVertices(ArrayList<Point> vertices) {
         Point centroid = calculateCentroid(vertices);
-
         vertices.sort(Comparator.comparingDouble(p -> Math.atan2(p.y - centroid.y, p.x - centroid.x)));
-
         return vertices;
     }
 
-    // Calculate the centroid of a polygon
+    // prumerna pozice všech bodu
     public static Point calculateCentroid(ArrayList<Point> vertices) {
         double cx = 0.0, cy = 0.0;
         int n = vertices.size();

@@ -1,6 +1,7 @@
 import Clipping.SutherlandHodgmanClipping;
 import fill.ScanLine;
 import fill.SeedFill4;
+import fill.SeedFill8;
 import model.*;
 import model.Point;
 import model.Polygon;
@@ -158,9 +159,19 @@ public class Canvas {
 			public void mouseReleased(MouseEvent e){
 				lineRasterizer.setColor(8777216);
 				if(SwingUtilities.isRightMouseButton(e)){
-					clear();
-					drawPolygon(PolygonCanvas.getVertices());
-					panel.repaint();
+					if(e.isShiftDown()){
+						filler.fill(img,e.getX(),e.getY(),0,8777216);
+						panel.repaint();
+					}
+					else if(e.isAltDown()){
+						filler.fillWithPattern(img,e.getX(),e.getY(),0,8777216,45613859);
+						panel.repaint();
+					}
+					else {
+						clear();
+						drawPolygon(PolygonCanvas.getVertices());
+						panel.repaint();
+					}
 				}
 				else if (SwingUtilities.isLeftMouseButton(e)) {
 					if(e.isControlDown()){}
@@ -180,7 +191,7 @@ public class Canvas {
 						x = e.getX();
 						y = e.getY();
 						ScanLine.fill(img,PolygonCanvas,8777216);
-						ScanLine.fill(img, rectanglePolygon,8777216);
+						ScanLine.fillWithPattern(img, rectanglePolygon,8777216, 12345862);
 						panel.repaint();
 					}
 					else {
@@ -191,7 +202,7 @@ public class Canvas {
 						Point center = rectanglePolygon.returnCenterPointsForElipse();
 						ArrayList<Integer> radius = rectanglePolygon.returnRadiusOfElipse();
 						elipsisPolygon = new Elipsis(center.x, center.y,radius.get(0) /2,radius.get(1)/2 );
-						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2 );
+						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2, elipsisPolygon );
 						panel.repaint();
 					}
 				}
@@ -227,7 +238,7 @@ public class Canvas {
 						ArrayList<Integer> radius = rectanglePolygon.returnRadiusOfElipse();
 						Point center = rectanglePolygon.returnCenterPointsForElipse();
 						elipsisPolygon = new Elipsis(center.x, center.y,radius.get(0) /2,radius.get(1)/2 );
-						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2 );
+						drawElipse(center.x,center.y,radius.get(0) /2,radius.get(1)/2, elipsisPolygon );
 						drawInteractivePolygon(rectanglePolygon.getVertices());
 						panel.repaint();
 					}
@@ -249,9 +260,9 @@ public class Canvas {
 				if(e.getKeyCode() == KeyEvent.VK_C){
 					clear();
 					PolygonCanvas.clearPolygon();
-					clippingPolygon.clearPolygon();
 					indexOfClosestPoint = 0;
 					if(rectanglePolygon != null){rectanglePolygon.clearPolygon();}
+					if(clippingPolygon != null){clippingPolygon.clearPolygon();}
 					panel.repaint();
 				}
 			}
@@ -317,8 +328,8 @@ public class Canvas {
 		lineRasterizer.rasterizeInteractivePrecisionLine(mouseX, mouseY, x,y);
 	}
 
-	public void drawElipse(int centerX, int centerY, int radiusX, int radiusY){
-		lineRasterizer.rasterizeElipse(centerX,centerY,radiusX,radiusY);
+	public void drawElipse(int centerX, int centerY, int radiusX, int radiusY, Elipsis elipsisPolygon){
+		lineRasterizer.rasterizeElipse(centerX,centerY,radiusX,radiusY, elipsisPolygon);
 	}
 
 	public void start() {
