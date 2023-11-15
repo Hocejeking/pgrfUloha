@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Elipsis extends Polygon{
     public Integer centerX, centerY, radiusX, radiusY;
-    private ArrayList<Line> lines;
+    private ArrayList<Line> lines = new ArrayList<>();
     public Elipsis(int centerX,int centerY,int radiusX,int radiusY){
         this.centerX = centerX;
         this.centerY = centerY;
