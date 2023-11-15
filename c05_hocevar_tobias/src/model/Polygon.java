@@ -3,6 +3,7 @@ package model;
 import java.awt.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Polygon {
     protected ArrayList<Point> polygonVertices = new ArrayList<>();
@@ -48,4 +49,26 @@ public class Polygon {
             }
         }
     }
+
+    public static ArrayList<Point> sortVertices(ArrayList<Point> vertices) {
+        Point centroid = calculateCentroid(vertices);
+
+        vertices.sort(Comparator.comparingDouble(p -> Math.atan2(p.y - centroid.y, p.x - centroid.x)));
+
+        return vertices;
+    }
+
+    // Calculate the centroid of a polygon
+    public static Point calculateCentroid(ArrayList<Point> vertices) {
+        double cx = 0.0, cy = 0.0;
+        int n = vertices.size();
+
+        for (Point vertex : vertices) {
+            cx += vertex.x;
+            cy += vertex.y;
+        }
+
+        return new Point(cx / n, cy / n);
+    }
+
 }
