@@ -137,8 +137,7 @@ public class ScanLine {
 
                 if (p1.y == p2.y) {
                 }
-
-                if ((p1.y < y && p2.y >= y) || (p2.y < y && p1.y >= y)) {
+                else if ((p1.y < y && p2.y >= y) || (p2.y < y && p1.y >= y)) {
                     double x = p1.x + (double) (y - p1.y) * (p2.x - p1.x) / (p2.y - p1.y);
                     intersectionPoints.add((int) x);
                 }
